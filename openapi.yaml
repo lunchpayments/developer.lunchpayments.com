@@ -1,6 +1,7 @@
 openapi: 3.0.0
 info:
   title: Lunch B2B API
+  description: Lunch’s Business to Business [B2B] Platform enables Channel Partners [CP] to offer embedded financing and payments to their users via Lunch’s B2B APIs.
   version: 1.1.1
 servers:
   - url: https://api.lunchpayments.com/b2b
