@@ -1,0 +1,325 @@
+openapi: 3.0.0
+info:
+  title: Lunch B2B API
+  version: 1.1.1
+servers:
+  - url: https://api.lunchpayments.com/b2b
+paths:
+  /authenticate:
+    post:
+      description: Lunch uses OAuth2 for authentication. The Client ID and Client Secret are configured on the Developer tab in the Lunch App for the CP’s account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - clientId
+                - clientSecret
+                - username
+                - password
+              properties:
+                clientId:
+                  type: string
+                  description: Public identifier in Lunch’s Oauth2 platform for the Channel Partner
+                clientSecret:
+                  type: string
+                  description: Oauth2 client secret
+                username:
+                  type: string
+                  description: OAuth2 account username
+                password:
+                  type: string
+                  description: OAuth2 account password
+      responses:
+        "200":
+          description: Successful authentication with the OAuth2 server
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    description: OAuth2 credential to access resources
+                  idToken: 
+                    type: string
+                    description: OAuth2 credential to access resources
+                  refreshToken:
+                    type: string
+                    description: For obtaining access tokens when the existing token expires
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /get-ach-details:
+    post:
+      description: The ACH details to make the payment to for an invoice using the make-payment API
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - invoiceExternalId
+              properties:
+                invoiceExternalId:
+                  type: string
+                  description: Unique uuid for the invoice in the Lunch Platform.
+
+      responses:
+        "200":
+          description: The ACH details for the make-payment call
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accountNumber:
+                    type: string
+                    description: ACH bank account number
+                  routingNumber:
+                    type: string
+                    description: ACH bank routing number
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /get-paid-now:
+    post:
+      description: Embedded financing API.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - invoiceId
+              properties:
+                amount:
+                  type: integer
+                  description: Invoice total amount in cents.
+                invoiceId:
+                  type: string
+                  description: Unique id in the Channel Partner Platform or database for the invoice.
+                vendorId:
+                  type: string
+                  description: Unique id in the Channel Partner Platform or database for the Vendor.
+                externalVendorId:
+                  type: string
+                  description: Unique uuid for the Vendor in the Lunch Platform.
+
+      responses:
+        "201":
+          description: Successful get paid now request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  externalOrderId:
+                    type: string
+                    description: Unique uuid for Get Paid Now in the Lunch Platform.
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /invoice:
+    post:
+      description: The Approved Invoice API ingests invoices that are approved to be paid by the Buyer, putting the invoice in a state where they are eligible for Get Paid Now.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - invoiceId
+                - invoiceNumber
+                - issueDate
+                - dueDate
+                - amount
+                - vendorExternalId
+                - customerName
+              properties:
+                invoiceId:
+                  type: string
+                  description: Unique id for the invoice in the Channel Partner Platform or database.
+                invoiceNumber:
+                  type: string
+                  description: Vendor's unique id for the invoice.
+                issueDate:
+                  type: string
+                  description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+                dueDate:
+                  type: string
+                  description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+                amount:
+                  type: number
+                  description: Approved amount (after tax) to be paid on the invoice in dollar and cents.
+                vendorExternalId:
+                  type: string
+                  description: Vendor who generated this invoice, the vendorExternalId represents the uuid for a vendor who has completed the onboarding.
+                customerName:
+                  type: string
+                  description: Name of the customer the invoice was billed to.
+                customerEmail:
+                  type: string
+                  description: Email of the customer the invoice was billed to, must be a valid email.
+                customerAddress:
+                  type: string
+                  description: Address, city, state and zip of the customer the invoice was billed to.
+                subTotalAmount:
+                  type: number
+                  description: The sub total (amount - taxAmount) in dollars.
+                taxAmount:
+                  type: number
+                  description: The amount of tax paid in dollars on the invoice.
+                taxPercent:
+                  type: number
+                  description: The percent tax for the invoice.
+                lineItems:
+                  type: array
+                  description: Array of Line Items.
+                  $ref: "#/components/schemas/LineItems"
+
+
+      responses:
+        "200":
+          description: Successful approved invoice. 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  invoiceExternalId:
+                    type: string
+                    description: Unique uuid for the invoice in the Lunch Platform.
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /make-payment:
+    post:
+      description: Initiate payment orders between Payor and Payee.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - invoiceExternalId
+                - payorAccountId
+                - payorRoutingNum
+                - payeeAccountId
+                - payeeRoutingNum
+              properties:
+                invoiceExternalId:
+                  type: string
+                  description: Unique uuid for the invoice in the Lunch Platform.
+                payorAccountId:
+                  type: string
+                  description: Payor’s bank account id from check.
+                payorRoutingNum:
+                  type: string
+                  description: Payor’s bank account routing number from check.
+                payeeAccountId:
+                  type: string
+                  description: Payee’s bank account id from check.
+                payeeRoutingNum:
+                  type: string
+                  description: Payee’s bank account routing number from check.
+
+      responses:
+        "202":
+          description: Successful initiation of the payment order. 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paymentExternalId:
+                    type: string
+                    description: Unique uuid for the payment in the Lunch Platform.
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+components:
+  schemas:
+    LineItem:
+      type: object
+      required: 
+        - description
+        - quantity
+        - rate
+        - amount
+      properties:
+        description:
+          type: string
+        quantity:
+          type: string
+        rate:
+          type: number
+        amount:
+          type: number
+    LineItems:
+      type: array
+      items:
+        $ref: "#/components/schemas/LineItem"
+    error:
+      type: object
+      required: 
+        - type
+        - message
+      properties:
+        type:
+          type: string
+        message:
+          type: string
