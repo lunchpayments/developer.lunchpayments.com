@@ -401,6 +401,12 @@ paths:
                 $ref: "#/components/schemas/error"
 
 components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: Send idToken from authenticate in the Authorization header
+      type: apiKey
+      in: header
+      name: Authorization
   schemas:
     LineItem:
       type: object
