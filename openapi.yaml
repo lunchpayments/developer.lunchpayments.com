@@ -9,7 +9,7 @@ paths:
     post:
       description: Lunch uses OAuth2 for authentication. The Client ID and Client Secret are configured on the Developer tab in the Lunch App for the CP’s account.
       tags:
-        - auth
+        - Authentication
       requestBody:
         required: true
         content:
