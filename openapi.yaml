@@ -8,6 +8,8 @@ paths:
   /authenticate:
     post:
       description: Lunch uses OAuth2 for authentication. The Client ID and Client Secret are configured on the Developer tab in the Lunch App for the CP’s account.
+      tags:
+        - auth
       requestBody:
         required: true
         content:
@@ -64,6 +66,8 @@ paths:
   /get-ach-details:
     post:
       description: The ACH details to make the payment to for an invoice using the make-payment API
+      tags:
+        - Payments
       requestBody:
         required: true
         content:
@@ -106,6 +110,8 @@ paths:
   /get-paid-now:
     post:
       description: Embedded financing API.
+      tags:
+        - Payments
       requestBody:
         required: true
         content:
@@ -155,6 +161,8 @@ paths:
   /invoice:
     post:
       description: The Approved Invoice API ingests invoices that are approved to be paid by the Buyer, putting the invoice in a state where they are eligible for Get Paid Now.
+      tags:
+        - Accounts Receivable
       requestBody:
         required: true
         content:
@@ -238,6 +246,8 @@ paths:
   /make-payment:
     post:
       description: Initiate payment orders between Payor and Payee.
+      tags:
+        - Payments
       requestBody:
         required: true
         content:
@@ -293,6 +303,8 @@ paths:
   /purchase-order:
     post:
       description: Create a Purchase Order.
+      tags:
+        - Accounts Receivable
       requestBody:
         required: true
         content:
