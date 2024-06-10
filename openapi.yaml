@@ -94,6 +94,8 @@ paths:
                     description: ACH bank routing number
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "5XX":
           $ref: "#/components/responses/InternalServerError"
         default:
@@ -139,6 +141,8 @@ paths:
                     description: Unique uuid for Get Paid Now in the Lunch Platform.
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "5XX":
           $ref: "#/components/responses/InternalServerError"
         default:
@@ -218,6 +222,8 @@ paths:
                     description: Unique uuid for the invoice in the Lunch Platform.
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "5XX":
           $ref: "#/components/responses/InternalServerError"
         default:
@@ -269,6 +275,8 @@ paths:
                     description: Unique uuid for the payment in the Lunch Platform.
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "5XX":
           $ref: "#/components/responses/InternalServerError"
         default:
@@ -294,6 +302,8 @@ paths:
 
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "5XX":
           $ref: "#/components/responses/InternalServerError"
         default:
@@ -318,6 +328,8 @@ paths:
                 $ref: "#/components/schemas/PurchaseOrderResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"          
         "5XX":
           $ref: "#/components/responses/InternalServerError"
         default:
@@ -469,6 +481,12 @@ components:
   responses:
     BadRequest:
       description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+    Unauthorized:
+      description: Unauthorized
       content:
         application/json:
           schema:
