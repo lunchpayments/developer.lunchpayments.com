@@ -520,7 +520,7 @@ components:
           description: Iso8601 UTC date when the invoice is due (format %Y-%m-%dT%H:%M:%S.%LZ).
         totalAmount:
           type: number
-          description: Iso8601 UTC date when the invoice was submitted (format %Y-%m-%dT%H:%M:%S.%LZ).
+          description: Invoice amount.
         tax:
           type: number
           description: tax as a percent.
