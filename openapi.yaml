@@ -454,6 +454,10 @@ components:
           description: Buyer's zip code.
     PurchaseOrderResponse:
       type: object
+      required:
+        - purchaseOrderExternalId
+        - buyerInformationId
+        - vendorInformationId
       properties:
         purchaseOrderExternalId:
           type: string
@@ -464,6 +468,9 @@ components:
         vendorInformationId:
           type: string
           description: Unique uuid for the tokenized vendor information.
+        vendorSignupLink:
+          type: string
+          description: Onboarding URL for vendor to access Get Paid Now on Lunch's vendor portal.
     LineItem:
       type: object
       required: 
