@@ -43,9 +43,6 @@ paths:
               schema:
                 type: object
                 properties:
-                  accessToken:
-                    type: string
-                    description: OAuth2 credential to access resources
                   idToken: 
                     type: string
                     description: OAuth2 credential to access resources
