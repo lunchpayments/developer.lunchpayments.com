@@ -157,69 +157,15 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - invoiceId
-                - invoiceNumber
-                - issueDate
-                - dueDate
-                - amount
-                - vendorExternalId
-                - customerName
-              properties:
-                invoiceId:
-                  type: string
-                  description: Unique id for the invoice in the Channel Partner Platform or database.
-                invoiceNumber:
-                  type: string
-                  description: Vendor's unique id for the invoice.
-                issueDate:
-                  type: string
-                  description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
-                dueDate:
-                  type: string
-                  description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
-                amount:
-                  type: number
-                  description: Approved amount (after tax) to be paid on the invoice in dollar and cents.
-                vendorExternalId:
-                  type: string
-                  description: Vendor who generated this invoice, the vendorExternalId represents the uuid for a vendor who has completed the onboarding.
-                customerName:
-                  type: string
-                  description: Name of the customer the invoice was billed to.
-                customerEmail:
-                  type: string
-                  description: Email of the customer the invoice was billed to, must be a valid email.
-                customerAddress:
-                  type: string
-                  description: Address, city, state and zip of the customer the invoice was billed to.
-                subTotalAmount:
-                  type: number
-                  description: The sub total (amount - taxAmount) in dollars.
-                taxAmount:
-                  type: number
-                  description: The amount of tax paid in dollars on the invoice.
-                taxPercent:
-                  type: number
-                  description: The percent tax for the invoice.
-                lineItems:
-                  type: array
-                  description: Array of Line Items.
-                  $ref: "#/components/schemas/LineItems"
-
-
+              $ref: "#/components/schemas/InvoiceRequest"
       responses:
         "200":
           description: Successful approved invoice. 
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  invoiceExternalId:
-                    type: string
-                    description: Unique uuid for the invoice in the Lunch Platform.
+              $ref: "#/components/schemas/InvoiceResponse"
+
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -334,6 +280,21 @@ paths:
           $ref: "#/components/responses/InternalServerError"
         default:
           $ref: "#/components/responses/UnexpectedError"
+  /submitted-invoice:
+    get:
+      description: Submitted invoice webhook. A submitted invoice is when a vendor creates and submits an invoice to the payor.
+      tags:
+        - Webhooks
+      callbacks:
+        SubmittedInvoice:
+          get:
+            requestBody:
+              required: true
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/SubmittedInvoiceResponse"
+
 
 components:
   securitySchemes:
@@ -343,6 +304,63 @@ components:
       in: header
       name: Authorization
   schemas:
+    InvoiceRequest:
+      type: object
+      required:
+        - invoiceId
+        - invoiceNumber
+        - issueDate
+        - dueDate
+        - amount
+        - vendorExternalId
+        - customerName
+      properties:
+        invoiceId:
+          type: string
+          description: Unique id for the invoice in the Channel Partner Platform or database.
+        invoiceNumber:
+          type: string
+          description: Vendor's unique id for the invoice.
+        issueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+        dueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+        amount:
+          type: number
+          description: Approved amount (after tax) to be paid on the invoice in dollar and cents.
+        vendorExternalId:
+          type: string
+          description: Vendor who generated this invoice, the vendorExternalId represents the uuid for a vendor who has completed the onboarding.
+        customerName:
+          type: string
+          description: Name of the customer the invoice was billed to.
+        customerEmail:
+          type: string
+          description: Email of the customer the invoice was billed to, must be a valid email.
+        customerAddress:
+          type: string
+          description: Address, city, state and zip of the customer the invoice was billed to.
+        subTotalAmount:
+          type: number
+          description: The sub total (amount - taxAmount) in dollars.
+        taxAmount:
+          type: number
+          description: The amount of tax paid in dollars on the invoice.
+        taxPercent:
+          type: number
+          description: The percent tax for the invoice.
+        lineItems:
+          type: array
+          description: Array of Line Items.
+          $ref: "#/components/schemas/LineItems"
+    InvoiceResponse:
+      type: object
+      properties:
+        invoiceExternalId:
+          type: string
+          description: Unique uuid for the invoice in the Lunch Platform.
     PurchaseOrderRequest:
       type: object
       required:
@@ -368,7 +386,7 @@ components:
           description: Unique id in the CP Platform or database for the purchase order.
         issuedDate:
           type: string
-          description: Iso8601 UTC date when the purchase was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+          description: Iso8601 UTC date when the purchase order was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
         dueDate:
           type: string
           description: Iso8601 UTC date when the purchase order is fulfilled by the vendor (format %Y-%m-%dT%H:%M:%S.%LZ).
@@ -448,6 +466,37 @@ components:
         vendorSignupLink:
           type: string
           description: Onboarding URL for vendor to access Get Paid Now on Lunch's vendor portal.
+    SubmittedInvoiceResponse:
+      type: object
+      required:
+        - invoiceInformationId
+        - purchaseOrderId
+        - purchaseOrderExternalId
+      properties:
+        invoiceInformationId:
+          type: string
+          description: Unique uuid for the submitted invoice order in the Lunch Platform.
+        purchaseOrderId:
+          type: string
+          description: Unique id in the CP Platform or database for the purchase order.
+        purchaseOrderExternalId:
+          type: string
+          description: Unique uuid for the purchase order in the Lunch Platform.
+        vendorId:
+          type: string
+          description: Unique id in the CP Platform or database for the vendor.
+        vendorExternalId:
+          type: string
+          description: Unique uuid for the vendor in the Lunch Platform.
+        vendorEmail:
+          type: string
+          description: Vendor’s email address.
+        submittedAt:
+          type: string
+          description: Iso8601 UTC date when the invoice was submitted (format %Y-%m-%dT%H:%M:%S.%LZ).
+        totalAmount:
+          type: number
+          description: Iso8601 UTC date when the invoice was submitted (format %Y-%m-%dT%H:%M:%S.%LZ).
     LineItem:
       type: object
       required: 
