@@ -60,7 +60,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-        "500":
+        "5XX":
           description: Internal server error
           content:
             application/json:
@@ -104,7 +104,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-        "500":
+        "5XX":
           description: Internal server error
           content:
             application/json:
@@ -240,7 +240,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-        "500":
+        "5XX":
           description: Internal server error
           content:
             application/json:
@@ -297,7 +297,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-        "500":
+        "5XX":
           description: Internal server error
           content:
             application/json:
@@ -321,18 +321,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PurchaseOrderResponse"
+
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/BadRequest"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
     put:
       description: Update a Purchase Order.
       tags:
@@ -506,3 +502,22 @@ components:
           type: string
         message:
           type: string
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+    UnexpectedError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
