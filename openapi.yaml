@@ -55,17 +55,11 @@ paths:
                     type: string
                     description: For obtaining access tokens when the existing token expires
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/BadRequest"
         "5XX":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
   /get-ach-details:
     post:
       description: The ACH details to make the payment to for an invoice using the make-payment API
@@ -99,17 +93,11 @@ paths:
                     type: string
                     description: ACH bank routing number
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/BadRequest"
         "5XX":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
   /get-paid-now:
     post:
       description: Embedded financing API.
@@ -150,17 +138,11 @@ paths:
                     type: string
                     description: Unique uuid for Get Paid Now in the Lunch Platform.
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/BadRequest"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
   /invoice:
     post:
       description: The Approved Invoice API ingests invoices that are approved to be paid by the Buyer, putting the invoice in a state where they are eligible for Get Paid Now.
@@ -235,17 +217,11 @@ paths:
                     type: string
                     description: Unique uuid for the invoice in the Lunch Platform.
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/BadRequest"
         "5XX":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
   /make-payment:
     post:
       description: Initiate payment orders between Payor and Payee.
@@ -292,17 +268,11 @@ paths:
                     type: string
                     description: Unique uuid for the payment in the Lunch Platform.
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/BadRequest"
         "5XX":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
   /purchase-order:
     post:
       description: Create a Purchase Order.
@@ -347,17 +317,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/PurchaseOrderResponse"
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
+          $ref: "#/components/responses/BadRequest"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
 
 components:
   securitySchemes:
