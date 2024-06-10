@@ -497,7 +497,7 @@ components:
         customer:
           type: object
           description: Customer details.
-          schema:
+          properties:
             name:
               type: string
               description: The customer's name.
