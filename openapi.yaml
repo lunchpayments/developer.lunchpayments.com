@@ -157,14 +157,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InvoiceRequest"
+              $ref: "#/components/schemas/CreateInvoiceRequest"
       responses:
         "200":
           description: Successful approved invoice. 
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/InvoiceResponse"
+              $ref: "#/components/schemas/CreateInvoiceResponse"
 
         "400":
           $ref: "#/components/responses/BadRequest"
@@ -304,7 +304,7 @@ components:
       in: header
       name: Authorization
   schemas:
-    InvoiceRequest:
+    CreateInvoiceRequest:
       type: object
       required:
         - invoiceId
@@ -355,7 +355,7 @@ components:
           type: array
           description: Array of Line Items.
           $ref: "#/components/schemas/LineItems"
-    InvoiceResponse:
+    CreateInvoiceResponse:
       type: object
       properties:
         invoiceExternalId:
