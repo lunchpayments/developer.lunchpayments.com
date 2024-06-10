@@ -151,7 +151,7 @@ paths:
     post:
       description: The Approved Invoice API ingests invoices that are approved to be paid by the Buyer, putting the invoice in a state where they are eligible for Get Paid Now.
       tags:
-        - Accounts Receivable
+        - Invoicing
       requestBody:
         required: true
         content:
@@ -231,7 +231,7 @@ paths:
     post:
       description: Create a Purchase Order.
       tags:
-        - Accounts Receivable
+        - Invoicing
       requestBody:
         required: true
         content:
@@ -258,7 +258,7 @@ paths:
     put:
       description: Update a Purchase Order.
       tags:
-        - Accounts Receivable
+        - Invoicing
       requestBody:
         required: true
         content:
