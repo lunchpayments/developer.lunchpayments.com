@@ -13,7 +13,9 @@ servers:
 paths:
   /authenticate:
     post:
-      description: Lunch uses OAuth2 for authentication. The Client ID and Client Secret are configured on the Developer tab in the Lunch App for the CP’s account.
+      description: |
+        Lunch uses OAuth2 for authentication. The Client ID and Client Secret are configured on the Developer tab in the Lunch App for the CP’s account.
+        ![authentication flow for a make payment example](authentication-sequence-diagram.png)     
       tags:
         - Authentication
       requestBody:
