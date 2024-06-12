@@ -26,39 +26,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - clientId
-                - clientSecret
-                - username
-                - password
-              properties:
-                clientId:
-                  type: string
-                  description: Public identifier in Lunch’s Oauth2 platform for the Channel Partner
-                clientSecret:
-                  type: string
-                  description: Oauth2 client secret
-                username:
-                  type: string
-                  description: OAuth2 account username
-                password:
-                  type: string
-                  description: OAuth2 account password
+              $ref: "#/components/responses/AuthenticateRequest"
       responses:
         "200":
           description: Successful authentication with the OAuth2 server
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  idToken: 
-                    type: string
-                    description: OAuth2 credential to access resources
-                  refreshToken:
-                    type: string
-                    description: For obtaining access tokens when the existing token expires
+                $ref: "#/components/responses/AuthenticateResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
         "5XX":
@@ -287,6 +262,38 @@ components:
       in: header
       name: Authorization
   schemas:
+    AuthenticateRequest:
+      type: object
+      required:
+        - clientId
+        - clientSecret
+        - username
+        - password
+      properties:
+        clientId:
+          type: string
+          description: Public identifier in Lunch’s Oauth2 platform for the Channel Partner
+        clientSecret:
+          type: string
+          description: Oauth2 client secret
+        username:
+          type: string
+          description: OAuth2 account username
+        password:
+          type: string
+          description: OAuth2 account password
+    AuthenticateResponse:
+      type: object
+      required:
+        - idToken
+        - refreshToken
+      properties:
+        idToken: 
+          type: string
+          description: OAuth2 credential to access resources
+        refreshToken:
+          type: string
+          description: For obtaining access tokens when the existing token expires
     CreateInvoiceRequest:
       type: object
       required:
