@@ -190,30 +190,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - invoiceExternalId
-                - payorAccountId
-                - payorRoutingNum
-                - payeeAccountId
-                - payeeRoutingNum
-              properties:
-                invoiceExternalId:
-                  type: string
-                  description: Unique uuid for the invoice in the Lunch Platform.
-                payorAccountId:
-                  type: string
-                  description: Payor’s bank account id from check.
-                payorRoutingNum:
-                  type: string
-                  description: Payor’s bank account routing number from check.
-                payeeAccountId:
-                  type: string
-                  description: Payee’s bank account id from check.
-                payeeRoutingNum:
-                  type: string
-                  description: Payee’s bank account routing number from check.
-
+              $ref: "#/components/schemas/MakePaymentRequest"
       responses:
         "202":
           description: Successful initiation of the payment order. 
@@ -387,6 +364,30 @@ components:
         routingNumber:
           type: string
           description: ACH bank routing number
+    MakePaymentRequest:
+      type: object
+      required:
+        - invoiceExternalId
+        - payorAccountId
+        - payorRoutingNum
+        - payeeAccountId
+        - payeeRoutingNum
+      properties:
+        invoiceExternalId:
+          type: string
+          description: Unique uuid for the invoice in the Lunch Platform.
+        payorAccountId:
+          type: string
+          description: Payor’s bank account id from check.
+        payorRoutingNum:
+          type: string
+          description: Payor’s bank account routing number from check.
+        payeeAccountId:
+          type: string
+          description: Payee’s bank account id from check.
+        payeeRoutingNum:
+          type: string
+          description: Payee’s bank account routing number from check.
     MakePaymentResponse:
       type: object
       required:
