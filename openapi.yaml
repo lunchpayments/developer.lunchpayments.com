@@ -82,28 +82,15 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - invoiceExternalId
-              properties:
-                invoiceExternalId:
-                  type: string
-                  description: Unique uuid for the invoice in the Lunch Platform.
-
+              $ref: "#/components/schemas/GetAchDetailsRequest"
       responses:
         "200":
           description: The ACH details for the make-payment call
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  accountNumber:
-                    type: string
-                    description: ACH bank account number
-                  routingNumber:
-                    type: string
-                    description: ACH bank routing number
+                $ref: "#/components/schemas/GetAchDetailsResponse"
+
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -315,7 +302,6 @@ webhooks:
             schema:
               $ref: "#/components/schemas/SubmittedInvoiceResponse"
 
-
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -381,6 +367,26 @@ components:
         invoiceExternalId:
           type: string
           description: Unique uuid for the invoice in the Lunch Platform.
+    GetAchDetailsRequest:
+      type: object
+      required:
+        - invoiceExternalId
+      properties:
+        invoiceExternalId:
+          type: string
+          description: Unique uuid for the invoice in the Lunch Platform.
+    GetAchDetailsResponse:
+      type: object
+      required:
+        - accountNumber
+        - routingNumber
+      properties:
+        accountNumber:
+          type: string
+          description: ACH bank account number
+        routingNumber:
+          type: string
+          description: ACH bank routing number
     MakePaymentResponse:
       type: object
       required:
