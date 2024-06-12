@@ -26,14 +26,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/responses/AuthenticateRequest"
+              $ref: "#/components/schemas/AuthenticateRequest"
       responses:
         "200":
           description: Successful authentication with the OAuth2 server
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/AuthenticateResponse"
+                $ref: "#/components/schemas/AuthenticateResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
         "5XX":
