@@ -67,7 +67,14 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
   /get-ach-details:
     post:
-      description: The ACH details to make the payment to for an invoice using the make-payment API
+      description: | 
+        Use case: The ACH details is called to determine the Bank account number and routing number for the payor's payment to be credited to. The ACH details call can be used to build a NACHA file or for the Lunch's /make-payment call.
+
+        ![Get ACH Details example](/getachdetails_sequence_diagram.png) 
+        
+        [sequence diagram](https://sequencediagram.org/index.html#initialData=IYYwLg9gTgBARABWAT2nGwDOMECgAOwUYAliCYQHZjwDCAFsJZQKYA2ORYrUAOpQjbAwAM2gBbdFhi08hYmQpMacADIBXSiHr9BwsVEkZsGrfVy4EAWgB8sgFydkMAJKUAbhDItcoUu+EWHF9wEgCwINlcWVtTbUcAegBzFjArUHorABNU4BI2TH4AIwgs5EcAb34YGBIPLxAWAFEADwioSmA2FyzHAHI+gBp+AF8Q-0CYOPNp2wcYACYABiWYAHkAaWLS8pgqyhrQEAhNMAA5dXEilih+oeqYKBPSSiSLq5u70dwcvzDJ6YWGI2aaJcTAADWLCshGQ4hY1G2ZUqDzqnm8rXanW6vRgA2GBxgsOgAEEQMdTj07gSasSoAAlZ51N6XakPWEsFhkinUKl4+6EjksRnqF4s8RfShjP7hIKA2Z2BCOZarTZI3b7WkoeHUTE3bF8gbfX6hWVTTTaCzRaw2JUwADK6nJLEwmB+LBlkyiJomERwQA)    
+
+
       tags:
         - Payments
       requestBody:
