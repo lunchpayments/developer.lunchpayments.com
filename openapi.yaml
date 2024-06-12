@@ -233,11 +233,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  paymentExternalId:
-                    type: string
-                    description: Unique uuid for the payment in the Lunch Platform.
+                $ref: "#/components/schemas/MakePaymentResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -385,6 +381,14 @@ components:
         invoiceExternalId:
           type: string
           description: Unique uuid for the invoice in the Lunch Platform.
+    MakePaymentResponse:
+      type: object
+      required:
+        - paymentExternalId
+      properties:
+        paymentExternalId:
+          type: string
+          description: Unique uuid for the payment in the Lunch Platform.
     PurchaseOrderRequest:
       type: object
       required:
