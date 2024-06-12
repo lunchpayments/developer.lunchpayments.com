@@ -292,6 +292,10 @@ webhooks:
       description: | 
         Use case: Lunch's ERP customer's use Lunch's Vendor Portal for vendors to key in or import their invoice submissions for a purchase order.
         
+        ![Submitted Invoice webhook flow example](/webhook_submittedinvoice_sequence_diagram.png) 
+        
+        [sequence diagram](https://sequencediagram.org/index.html#initialData=A4QwTgLglgxloDsIAIBEBhAFiBCCmANsgArgT5gA6CxBIEAZgPZgC2qyIAzsusQFChIseDhSoAMgFcEMTNVr1mbDt2TTZmQWRGJxGudQBqeBABMWJFhBAFVPIwJAwIl1CfMt7yI-358AWgA+A0wALhIAeQBlABVkAHpgKTA5bjwAljM8MH5naAA3ejxeJxcoIogS0P5Q4L4IgCYABmbkSIBpfmz8iuLS7rxeyuqZOT8jYMcI6KHUzGRlKLzykZ8Vwv7HfkcpiOIUtK4SyLBs3J7VrYEdqeIZqQAjVigUAEkEAqZYPA2+qp8Al2ITG4WQ0SeL3en2+MF+w36NTqQWmyBabU6O2Ie3BUhgcK4XEGCIB20um1JfmRoQiAHFTDl+gB3PCPTBMJgAa1qoPq92QtIAovEEjBbARHs5OQlqABvajIKAwn4fZSsehQJgIN5mCIAcj1ABoFcl5ulTucdfqjQqAHT26gAX2JVwBoSAA)    
+
       tags:
         - Webhooks
       requestBody:
