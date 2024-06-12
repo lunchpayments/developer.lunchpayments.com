@@ -188,7 +188,14 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
   /make-payment:
     post:
-      description: Initiate payment orders between Payor and Payee.
+      description: | 
+        Initiate payment orders between Payor and Payee.
+
+        - Payee: the recipient of the payment. 
+        - Payor: the sender of the payment.
+
+        The make payment operation debits the payor’s account and credits and the payee’s.
+
       tags:
         - Payments
       requestBody:
