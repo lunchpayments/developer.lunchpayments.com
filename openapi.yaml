@@ -289,7 +289,9 @@ paths:
 webhooks:
   SubmittedInvoice:
     get:
-      description: Submitted invoice webhook. A submitted invoice is when a vendor creates and submits an invoice to the payor.
+      description: | 
+        Use case: Lunch's ERP customer's use Lunch's Vendor Portal for vendors to key in or import their invoice submissions for a purchase order.
+        
       tags:
         - Webhooks
       requestBody:
