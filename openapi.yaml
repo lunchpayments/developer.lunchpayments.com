@@ -86,21 +86,15 @@ paths:
             schema:
               type: object
               required:
-                - amount
                 - invoiceId
+                - productId
               properties:
-                amount:
-                  type: integer
-                  description: Invoice total amount in cents.
                 invoiceId:
                   type: string
                   description: Unique id in the Channel Partner Platform or database for the invoice.
-                vendorId:
+                productId:
                   type: string
-                  description: Unique id in the Channel Partner Platform or database for the Vendor.
-                externalVendorId:
-                  type: string
-                  description: Unique uuid for the Vendor in the Lunch Platform.
+                  description: Unique id of the factoring product
 
       responses:
         "201":
@@ -138,7 +132,7 @@ paths:
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/CreateInvoiceResponse"
+                $ref: "#/components/schemas/CreateInvoiceResponse"
 
         "400":
           $ref: "#/components/responses/BadRequest"
@@ -593,13 +587,31 @@ components:
     error:
       type: object
       required: 
-        - type
-        - message
+        - errorMessage
       properties:
-        type:
+        errorMessage:
           type: string
+        errorBody:
+          oneOf:
+            - $ref: "#/components/schemas/parsingErrorBody"
+            - type: string
+    parsingErrorBody:
+      type: object
+      description: Request parsing error
+      properties:
+        fields:
+          type: array
+          items:
+            oneOf:
+              - type: string
+              - type: number
         message:
           type: string
+        'type':
+          oneOf:
+            - type: string
+            - type: number
+
   responses:
     BadRequest:
       description: Bad request
