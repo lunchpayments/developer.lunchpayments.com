@@ -606,8 +606,6 @@ components:
         channelPartnerId:
           type: string
           description: Unque string for the channel partner.
-
-
     LineItem:
       type: object
       required: 
