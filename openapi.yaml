@@ -487,6 +487,8 @@ components:
       type: object
       required:
         - purchaseOrderExternalId
+        - buyerInformationId
+        - vendorInformationId
       properties:
         purchaseOrderExternalId:
           type: string
