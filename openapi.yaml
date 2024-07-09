@@ -247,6 +247,18 @@ webhooks:
           application/json:
             schema:
               $ref: "#/components/schemas/SubmittedInvoiceResponse"
+  VendorOnboarded:
+    get:
+      description: |
+        Use case: Vendor has onboarded via the vendorSignupLink 
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VendorOnboardedResponse"
 
 components:
   securitySchemes:
@@ -564,6 +576,38 @@ components:
           type: array
           description: Array of Line Items.
           $ref: "#/components/schemas/LineItems"
+    VendorOnboardedResponse:
+      type: object
+      required:
+        - vendorId
+        - vendorExternalId
+        - createdAt
+        - vendorName
+        - channelPartnerId
+      properties:
+        vendorId:
+          type: string
+          description: Channel Partners unique id for the vendor.
+        vendorExternalId:
+          type: string
+          description: Lunch's unique id for the vendor.
+        vendorInformationId:
+          type: string
+          description: Unique uuid for the tokenized vendor information.
+        createdAt:
+          type: string
+          description: Iso8601 UTC date when the vendor onboarded (format %Y-%m-%dT%H:%M:%S.%LZ).
+        vendorName:
+          type: string
+          description: Name of the vendor.
+        vendorEmail:
+          type: string
+          description: Vendor’s email address.
+        channelPartnerId:
+          type: string
+          description: Unque string for the channel partner.
+
+
     LineItem:
       type: object
       required: 
