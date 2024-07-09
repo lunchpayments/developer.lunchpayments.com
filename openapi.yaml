@@ -491,6 +491,15 @@ components:
         purchaseOrderExternalId:
           type: string
           description: Unique uuid for the purchase order in the Lunch Platform.
+        buyerInformationId:
+          type: string
+          description: Unique uuid for the tokenized buyer information.
+        vendorInformationId:
+          type: string
+          description: Unique uuid for the tokenized vendor information.
+        vendorSignupLink:
+          type: string
+          description: URL for a vendor to onboard to Lunch.
     SubmittedInvoiceResponse:
       type: object
       required:
