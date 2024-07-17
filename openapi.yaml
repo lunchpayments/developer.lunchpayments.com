@@ -617,7 +617,7 @@ components:
         description:
           type: string
         quantity:
-          type: string
+          type: number
         rate:
           type: number
         amount:
