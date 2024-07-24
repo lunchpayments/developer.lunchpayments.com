@@ -142,6 +142,27 @@ paths:
           $ref: "#/components/responses/InternalServerError"
         default:
           $ref: "#/components/responses/UnexpectedError"
+  /invoice/{invoiceExternalId}:
+    get:
+      description: The approved invoice for the unique uuid in the Lunch Platform.
+      tags:
+        - Invoicing
+      responses:
+        "200":
+          description: Successfully get the approved invoice. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInvoiceResponse"
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
   /make-payment:
     post:
       description: | 
@@ -357,6 +378,61 @@ components:
         invoiceExternalId:
           type: string
           description: Unique uuid for the invoice in the Lunch Platform.
+    GetInvoiceResponse:
+      type: object
+      required:
+        - invoiceId
+        - invoiceExternalId
+        - invoiceNumber
+        - issueDate
+        - dueDate
+        - amount
+        - vendorExternalId
+        - customerName
+      properties:
+        invoiceId:
+          type: string
+          description: Unique id for the invoice in the Channel Partner Platform or database.
+        invoiceExternalId:
+          type: string
+          description: Unique uuid for the invoice in the Lunch Platform.
+        invoiceNumber:
+          type: string
+          description: Vendor's unique id for the invoice.
+        issueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+        dueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+        amount:
+          type: number
+          description: Approved amount (after tax) to be paid on the invoice in dollar and cents.
+        vendorExternalId:
+          type: string
+          description: Vendor who generated this invoice, the vendorExternalId represents the uuid for a vendor who has completed the onboarding.
+        customerName:
+          type: string
+          description: Name of the customer the invoice was billed to.
+        customerEmail:
+          type: string
+          description: Email of the customer the invoice was billed to, must be a valid email.
+        customerAddress:
+          type: string
+          description: Address, city, state and zip of the customer the invoice was billed to.
+        subTotalAmount:
+          type: number
+          description: The sub total (amount - taxAmount) in dollars.
+        taxAmount:
+          type: number
+          description: The amount of tax paid in dollars on the invoice.
+        taxPercent:
+          type: number
+          description: The percent tax for the invoice.
+        lineItems:
+          type: array
+          description: Array of Line Items.
+          $ref: "#/components/schemas/LineItems"
     GetAchDetailsRequest:
       type: object
       required:
