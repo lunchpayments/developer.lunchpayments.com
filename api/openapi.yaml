@@ -1,0 +1,757 @@
+openapi: 3.1.0
+info:
+  title: Lunch B2B API
+  description: Lunch enables platforms to embed financing and payments via API.
+  termsOfService: https://www.lunchpayments.com/termsofservice
+  contact:
+    name: API Support and Inquiries
+    url: https://www.lunchpayments.com/learnmore
+    email: cullen@lunchpayments.com
+  version: 1.1.1
+servers:
+  - url: https://api.lunchpayments.com/b2b
+paths:
+  /authenticate:
+    post:
+      description: |
+        Lunch uses OAuth2 for authentication. The Client ID and Client Secret are configured on the Developer tab in the Lunch App for the CP’s account.
+        
+        ![authentication flow for a make payment example](/authentication_sequence_diagram.png) 
+        
+        [sequence diagram](https://sequencediagram.org/index.html#initialData=A4QwTgLglgxloDsIAIBEBhAFiBCCmANsgArgT5gA6CxBIEAZgPZgC2qyIAzsusQOoAoUJFjwcKDNlyESZCtQCSSPAHMw9KEwTIAskwAmAVwJ4O3XsQBCwsmMSSAMkYQxM1WvWZtzPZ68xbUTgHNH83agB5AEEjCEwAJl9kaP4AZUEgkAJTIkEEJgg8ZCYANzwwSysALmQAJTwuJiMwGGLIgHcKfMLisorkcMxahqaWtuQ0ivKwHqKSmZT02tj4ligAL01tSemKrJzZJgYGTL5+AFoAPj4avRAAa2LSAE9WPCRBEBhoUvpi26CW7XIa1AD0IDimA+0Bg-2oyAARoYXrUAN4I5AwAhQGGKAy1ADkhIANMhMdjcUgpjAwHgIETSZijFwKggQO9GSTMaAuFwOiwCchiQiAL5fH5QP7zIaCIbXVJpWqQ+Iw2D-AAUBnoIAAlBLfv8lhlFSCXG5agkAAxW5CRADSCORBlRyAxOmQUAMABUmE8EFzMXSGHSuJhff7AwhxQY8N9DfNFXLzZhrrdLTa7Y6dM7Xe7kJ6fX6PlGC8HQ+HiwHhUzo4JY-GpUbZUDrGaAuDWI88BdQG8YQjoSBY2AuOjOFD1ltoNpaqgACRor0Rj6ijii7k5lHjvsEJjD5AAOmPyHFggAvOfvdDkH33khkAw9x1PTwDFAuDAWayDJ6dKrkC7J5bxAfsH1ZOBtEvVsrAuNMBAzW0HXrONJWlAFrCAA)    
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthenticateRequest"
+      responses:
+        "200":
+          description: Successful authentication with the OAuth2 server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticateResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+  /get-ach-details:
+    post:
+      description: | 
+        Use case: The ACH details is called to determine the Bank account number and routing number for the payor's payment to be credited to. The ACH details call can be used to build a NACHA file or for the Lunch's /make-payment call.
+
+        ![Get ACH Details example](/getachdetails_sequence_diagram.png) 
+        
+        [sequence diagram](https://sequencediagram.org/index.html#initialData=IYYwLg9gTgBARABWAT2nGwDOMECgAOwUYAliCYQHZjwDCAFsJZQKYA2ORYrUAOpQjbAwAM2gBbdFhi08hYmQpMacADIBXSiHr9BwsVEkZsGrfVy4EAWgB8sgFydkMAJKUAbhDItcoUu+EWHF9wEgCwINlcWVtTbUcAegBzFjArUHorABNU4BI2TH4AIwgs5EcAb34YGBIPLxAWAFEADwioSmA2FyzHAHI+gBp+AF8Q-0CYOPNp2wcYACYABiWYAHkAaWLS8pgqyhrQEAhNMAA5dXEilih+oeqYKBPSSiSLq5u70dwcvzDJ6YWGI2aaJcTAADWLCshGQ4hY1G2ZUqDzqnm8rXanW6vRgA2GBxgsOgAEEQMdTj07gSasSoAAlZ51N6XakPWEsFhkinUKl4+6EjksRnqF4s8RfShjP7hIKA2Z2BCOZarTZI3b7WkoeHUTE3bF8gbfX6hWVTTTaCzRaw2JUwADK6nJLEwmB+LBlkyiJomERwQA)    
+
+
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetAchDetailsRequest"
+      responses:
+        "200":
+          description: The ACH details for the make-payment call
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAchDetailsResponse"
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+  /get-paid-now:
+    post:
+      description: Embedded financing API.
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - invoiceId
+                - productId
+              properties:
+                invoiceId:
+                  type: string
+                  description: Unique id in the Channel Partner Platform or database for the invoice.
+                productId:
+                  type: string
+                  description: Unique id of the factoring product
+
+      responses:
+        "201":
+          description: Successful get paid now request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  externalOrderId:
+                    type: string
+                    description: Unique uuid for Get Paid Now in the Lunch Platform.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+  /invoice:
+    post:
+      description: The Approved Invoice API ingests invoices that are approved to be paid by the Buyer, putting the invoice in a state where they are eligible for Get Paid Now.
+      tags:
+        - Invoicing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInvoiceRequest"
+      responses:
+        "200":
+          description: Successful approved invoice. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateInvoiceResponse"
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+  /invoice/{invoiceExternalId}:
+    get:
+      description: The approved invoice for the unique uuid in the Lunch Platform.
+      tags:
+        - Invoicing
+      responses:
+        "200":
+          description: Successfully get the approved invoice. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInvoiceResponse"
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+  /make-payment:
+    post:
+      description: | 
+        Initiate payment orders between Payor and Payee.
+
+        - Payee: the recipient of the payment. 
+        - Payor: the sender of the payment.
+
+        The make payment operation debits the payor’s account and credits and the payee’s.
+
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MakePaymentRequest"
+      responses:
+        "202":
+          description: Successful initiation of the payment order. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MakePaymentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+  /purchase-order:
+    post:
+      description: Create a Purchase Order.
+      tags:
+        - Invoicing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PurchaseOrderRequest"              
+      responses:
+        "200":
+          description: Successful creation of the purchase order. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PurchaseOrderResponse"
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+    put:
+      description: Update a Purchase Order.
+      tags:
+        - Invoicing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PurchaseOrderRequest"              
+      responses:
+        "200":
+          description: Successful update of the purchase order. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PurchaseOrderResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"          
+        "5XX":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+webhooks:
+  SubmittedInvoice:
+    get:
+      description: | 
+        Use case: Lunch's ERP customer's use Lunch's Vendor Portal for vendors to key in or import their invoice submissions for a purchase order.
+        
+        ![Submitted Invoice webhook flow example](/webhook_submittedinvoice_sequence_diagram.png) 
+        
+        [sequence diagram](https://sequencediagram.org/index.html#initialData=A4QwTgLglgxloDsIAIBEBhAFiBCCmANsgArgT5gA6CxBIEAZgPZgC2qyIAzsusQFChIseDhSoAMgFcEMTNVr1mbDt2TTZmQWRGJxGudQBqeBABMWJFhBAFVPIwJAwIl1CfMt7yI-358AWgA+A0wALhIAeQBlABVkAHpgKTA5bjwAljM8MH5naAA3ejxeJxcoIogS0P5Q4L4IgCYABmbkSIBpfmz8iuLS7rxeyuqZOT8jYMcI6KHUzGRlKLzykZ8Vwv7HfkcpiOIUtK4SyLBs3J7VrYEdqeIZqQAjVigUAEkEAqZYPA2+qp8Al2ITG4WQ0SeL3en2+MF+w36NTqQWmyBabU6O2Ie3BUhgcK4XEGCIB20um1JfmRoQiAHFTDl+gB3PCPTBMJgAa1qoPq92QtIAovEEjBbARHs5OQlqABvajIKAwn4fZSsehQJgIN5mCIAcj1ABoFcl5ulTucdfqjQqAHT26gAX2JVwBoSAA)    
+
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmittedInvoiceResponse"
+  VendorOnboarded:
+    get:
+      description: |
+        Use case: Vendor has onboarded via the vendorSignupLink 
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VendorOnboardedResponse"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: Send idToken from authenticate in the Authorization header
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    AuthenticateRequest:
+      type: object
+      required:
+        - clientId
+        - clientSecret
+        - username
+        - password
+      properties:
+        clientId:
+          type: string
+          description: Public identifier in Lunch’s Oauth2 platform for the Channel Partner
+        clientSecret:
+          type: string
+          description: Oauth2 client secret
+        username:
+          type: string
+          description: OAuth2 account username
+        password:
+          type: string
+          description: OAuth2 account password
+    AuthenticateResponse:
+      type: object
+      required:
+        - idToken
+        - refreshToken
+      properties:
+        idToken: 
+          type: string
+          description: OAuth2 credential to access resources
+        refreshToken:
+          type: string
+          description: For obtaining access tokens when the existing token expires
+    CreateInvoiceRequest:
+      type: object
+      required:
+        - invoiceId
+        - invoiceNumber
+        - issueDate
+        - dueDate
+        - amount
+        - vendorExternalId
+        - customerName
+      properties:
+        invoiceId:
+          type: string
+          description: Unique id for the invoice in the Channel Partner Platform or database.
+        invoiceNumber:
+          type: string
+          description: Vendor's unique id for the invoice.
+        issueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+        dueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+        amount:
+          type: number
+          description: Approved amount (after tax) to be paid on the invoice in dollar and cents.
+        vendorExternalId:
+          type: string
+          description: Vendor who generated this invoice, the vendorExternalId represents the uuid for a vendor who has completed the onboarding.
+        customerName:
+          type: string
+          description: Name of the customer the invoice was billed to.
+        customerEmail:
+          type: string
+          description: Email of the customer the invoice was billed to, must be a valid email.
+        customerAddress:
+          type: string
+          description: Address, city, state and zip of the customer the invoice was billed to.
+        subTotalAmount:
+          type: number
+          description: The sub total (amount - taxAmount) in dollars.
+        taxAmount:
+          type: number
+          description: The amount of tax paid in dollars on the invoice.
+        taxPercent:
+          type: number
+          description: The percent tax for the invoice.
+        lineItems:
+          type: array
+          description: Array of Line Items.
+          $ref: "#/components/schemas/LineItems"
+    CreateInvoiceResponse:
+      type: object
+      properties:
+        invoiceExternalId:
+          type: string
+          description: Unique uuid for the invoice in the Lunch Platform.
+    GetInvoiceResponse:
+      type: object
+      required:
+        - invoiceId
+        - invoiceExternalId
+        - invoiceNumber
+        - issueDate
+        - dueDate
+        - amount
+        - vendorExternalId
+        - customerName
+      properties:
+        invoiceId:
+          type: string
+          description: Unique id for the invoice in the Channel Partner Platform or database.
+        invoiceExternalId:
+          type: string
+          description: Unique uuid for the invoice in the Lunch Platform.
+        invoiceNumber:
+          type: string
+          description: Vendor's unique id for the invoice.
+        issueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+        dueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+        amount:
+          type: number
+          description: Approved amount (after tax) to be paid on the invoice in dollar and cents.
+        vendorExternalId:
+          type: string
+          description: Vendor who generated this invoice, the vendorExternalId represents the uuid for a vendor who has completed the onboarding.
+        customerName:
+          type: string
+          description: Name of the customer the invoice was billed to.
+        customerEmail:
+          type: string
+          description: Email of the customer the invoice was billed to, must be a valid email.
+        customerAddress:
+          type: string
+          description: Address, city, state and zip of the customer the invoice was billed to.
+        subTotalAmount:
+          type: number
+          description: The sub total (amount - taxAmount) in dollars.
+        taxAmount:
+          type: number
+          description: The amount of tax paid in dollars on the invoice.
+        taxPercent:
+          type: number
+          description: The percent tax for the invoice.
+        lineItems:
+          type: array
+          description: Array of Line Items.
+          $ref: "#/components/schemas/LineItems"
+    GetAchDetailsRequest:
+      type: object
+      required:
+        - invoiceExternalId
+      properties:
+        invoiceExternalId:
+          type: string
+          description: Unique uuid for the invoice in the Lunch Platform.
+    GetAchDetailsResponse:
+      type: object
+      required:
+        - accountNumber
+        - routingNumber
+      properties:
+        accountNumber:
+          type: string
+          description: ACH bank account number
+        routingNumber:
+          type: string
+          description: ACH bank routing number
+    MakePaymentRequest:
+      type: object
+      required:
+        - invoiceExternalId
+        - payorAccountId
+        - payorRoutingNum
+        - payeeAccountId
+        - payeeRoutingNum
+      properties:
+        invoiceExternalId:
+          type: string
+          description: Unique uuid for the invoice in the Lunch Platform.
+        payorAccountId:
+          type: string
+          description: Payor’s bank account id from check.
+        payorRoutingNum:
+          type: string
+          description: Payor’s bank account routing number from check.
+        payeeAccountId:
+          type: string
+          description: Payee’s bank account id from check.
+        payeeRoutingNum:
+          type: string
+          description: Payee’s bank account routing number from check.
+    MakePaymentResponse:
+      type: object
+      required:
+        - paymentExternalId
+      properties:
+        paymentExternalId:
+          type: string
+          description: Unique uuid for the payment in the Lunch Platform.
+    PurchaseOrderRequest:
+      type: object
+      required:
+        - purchaseOrderId
+        - issuedDate
+        - purchaseOrderNumber
+        - vendorId
+        - vendorName
+        - vendorPhone
+        - vendorAddress
+        - vendorCity
+        - vendorState
+        - vendorZip
+        - buyerId
+        - buyerName
+        - buyerAddress
+        - buyerCity
+        - buyerState
+        - buyerZip
+      properties:
+        purchaseOrderId:
+          type: string
+          description: Unique id in the CP Platform or database for the purchase order.
+        issuedDate:
+          type: string
+          description: Iso8601 UTC date when the purchase order was issued by the buyer (format %Y-%m-%dT%H:%M:%S.%LZ).
+        dueDate:
+          type: string
+          description: Iso8601 UTC date when the purchase order is fulfilled by the vendor (format %Y-%m-%dT%H:%M:%S.%LZ).
+        purchaseOrderGroup:
+          type: string
+          description: Buyer’s purchase order group.
+        purchaseOrderNumber:
+          type: string
+          description: Buyer’s purchase order number.
+        amount:
+          type: number
+          description: Format xxx.xx with maximum of 2 decimal places precision 
+        description:
+          type: string
+          description: Buyer’s description of the services to be fulfilled.
+        vendorId:
+          type: string
+          description: Channel Partners unique id for the vendor.
+        vendorName:
+          type: string
+          description: Name of the vendor.
+        vendorAttention:
+          type: string
+          description: Vendor employee to bring PO issuance attention to.
+        vendorPhone:
+          type: string
+          description: Vendor’s phone number.
+        vendorEmail:
+          type: string
+          description: Vendor’s email address.
+        vendorAddress:
+          type: string
+          description: Vendor’s street address.
+        vendorCity:
+          type: string
+          description: Vendor’s city address.
+        vendorState:
+          type: string
+          description: Vendor’s state abbreviation.
+        vendorZip:
+          type: string
+          description: Vendor’s zip code.
+        buyerId:
+          type: string
+          description: Channel Partners unique id for the buyer.
+        buyerName:
+          type: string
+          description: Name of the buyer.
+        buyerddress:
+          type: string
+          description: Buyer's street address.
+        buyerCity:
+          type: string
+          description: Buyer's city address.
+        buyerState:
+          type: string
+          description: Buyer's state abbreviation.
+        buyerZip:
+          type: string
+          description: Buyer's zip code.
+    PurchaseOrderResponse:
+      type: object
+      required:
+        - purchaseOrderExternalId
+        - buyerInformationId
+        - vendorInformationId
+      properties:
+        purchaseOrderExternalId:
+          type: string
+          description: Unique uuid for the purchase order in the Lunch Platform.
+        buyerInformationId:
+          type: string
+          description: Unique uuid for the tokenized buyer information.
+        vendorInformationId:
+          type: string
+          description: Unique uuid for the tokenized vendor information.
+        vendorSignupLink:
+          type: string
+          description: URL for a vendor to onboard to Lunch.
+    SubmittedInvoiceResponse:
+      type: object
+      required:
+        - invoiceInformationId
+        - purchaseOrderId
+        - purchaseOrderExternalId
+        - vendorId
+        - vendorExternalId
+        - totalAmount
+      properties:
+        invoiceInformationId:
+          type: string
+          description: Unique uuid for the submitted invoice order in the Lunch Platform.
+        purchaseOrderId:
+          type: string
+          description: Unique id in the CP Platform or database for the purchase order.
+        purchaseOrderExternalId:
+          type: string
+          description: Unique uuid for the purchase order in the Lunch Platform.
+        vendorId:
+          type: string
+          description: Unique id in the CP Platform or database for the vendor.
+        vendorExternalId:
+          type: string
+          description: Unique uuid for the vendor in the Lunch Platform.
+        vendorEmail:
+          type: string
+          description: Vendor’s email address.
+        customer:
+          type: object
+          description: Customer details.
+          required:
+            - name
+          properties:
+            name:
+              type: string
+              description: The customer's name.
+            email:
+              type: string
+              description: The customer's email.
+            address:
+              type: string
+              description: The customer's address.
+        submittedAt:
+          type: string
+          description: Iso8601 UTC date when the invoice was submitted (format %Y-%m-%dT%H:%M:%S.%LZ).
+        issueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice was issued (format %Y-%m-%dT%H:%M:%S.%LZ).
+        dueDate:
+          type: string
+          description: Iso8601 UTC date when the invoice is due (format %Y-%m-%dT%H:%M:%S.%LZ).
+        totalAmount:
+          type: number
+          description: Invoice amount.
+        tax:
+          type: number
+          description: tax as a percent.
+        lineItems:
+          type: array
+          description: Array of Line Items.
+          $ref: "#/components/schemas/LineItems"
+    VendorOnboardedResponse:
+      type: object
+      required:
+        - vendorId
+        - vendorExternalId
+        - createdAt
+        - vendorName
+        - channelPartnerId
+      properties:
+        vendorId:
+          type: string
+          description: Channel Partners unique id for the vendor.
+        vendorExternalId:
+          type: string
+          description: Lunch's unique id for the vendor.
+        vendorInformationId:
+          type: string
+          description: Unique uuid for the tokenized vendor information.
+        createdAt:
+          type: string
+          description: Iso8601 UTC date when the vendor onboarded (format %Y-%m-%dT%H:%M:%S.%LZ).
+        vendorName:
+          type: string
+          description: Name of the vendor.
+        vendorEmail:
+          type: string
+          description: Vendor’s email address.
+        channelPartnerId:
+          type: string
+          description: Unque string for the channel partner.
+    LineItem:
+      type: object
+      required: 
+        - description
+        - quantity
+        - rate
+        - amount
+      properties:
+        description:
+          type: string
+        quantity:
+          type: number
+        rate:
+          type: number
+        amount:
+          type: number
+    LineItems:
+      type: array
+      items:
+        $ref: "#/components/schemas/LineItem"
+    error:
+      type: object
+      required: 
+        - errorMessage
+      properties:
+        errorMessage:
+          type: string
+        errorBody:
+          oneOf:
+            - $ref: "#/components/schemas/parsingErrorBody"
+            - type: string
+    parsingErrorBody:
+      type: object
+      description: Request parsing error
+      properties:
+        fields:
+          type: array
+          items:
+            oneOf:
+              - type: string
+              - type: number
+        message:
+          type: string
+        'type':
+          oneOf:
+            - type: string
+            - type: number
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+    UnexpectedError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
