@@ -24,8 +24,8 @@ export const Landing = () => {
   const navigate = useNavigate();
 
   return (
-    <Primary>
-      <div className="grid grid-cols-2 gap-6 pt-4">
+    <Primary skipHomeButton>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-6 pt-2 lg:pt-4">
         {links.map((link) => (
           <button
             onClick={() => {
@@ -41,11 +41,11 @@ export const Landing = () => {
               {link.title}
             </div>
 
-            <div className="text-center text-sm px-10 text-white/80 group-hover:text-brand">
+            <div className="text-center text-sm px-2 lg:px-10 text-white/80 group-hover:text-brand">
               {link.description}
             </div>
 
-            <div className="text-center pt-2 text-sm px-10 text-white font-bold group-hover:text-brand">
+            <div className="text-center pt-2 text-sm px-2 lg:px-10 text-white font-bold group-hover:text-brand">
               Get Started Now »
             </div>
           </button>

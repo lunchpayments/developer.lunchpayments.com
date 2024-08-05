@@ -80,10 +80,13 @@ app.get('/embed-token', async (req, res) => {
 
 export const EmbeddedGPN = () => {
   return (
-    <Primary canGoBack>
-      <div className="flex flex-col divide-y divide-solid divide-gray-200 px-4">
+    <Primary>
+      <div className="flex flex-col divide-y divide-solid divide-gray-200 px-2">
         {steps.map((step, index) => (
-          <div className="flex flex-col gap-y-4 py-6" key={index}>
+          <div
+            className="flex flex-col gap-y-2 lg:gap-y-4 py-2 lg:py-6"
+            key={index}
+          >
             <h2 className="text-xl text-brand font-bold">
               Step {index + 1}. {step.title}
             </h2>
