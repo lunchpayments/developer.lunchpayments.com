@@ -27,7 +27,7 @@ export const Primary = ({ children, skipHomeButton }: PrimaryProps) => {
 
         <div className="flex flex-col">
           <div className="flex flex-row justify-between items-end gap-x-2 lg:gap-x-6">
-            <div className="text-lg lg:text-4xl text-brand font-medium ml-4">
+            <div className="text-lg lg:text-4xl text-brand font-medium ml-2 lg:ml-4">
               Lunch Developer Documentation
             </div>
 
