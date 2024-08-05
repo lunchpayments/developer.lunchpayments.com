@@ -34,7 +34,7 @@ export const Primary = ({ children, skipHomeButton }: PrimaryProps) => {
             <img
               src={HappyLunchbot}
               alt="Happy Lunchbot"
-              className="h-16 lg:h-24 mr-2 lg:mr-10 mb-[-1px] -scale-x-100"
+              className="h-12 lg:h-24 mr-2 lg:mr-10 mb-[-1px] -scale-x-100"
             />
           </div>
 
