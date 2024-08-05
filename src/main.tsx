@@ -7,25 +7,20 @@ import { API } from "./pages/API";
 import { Landing } from "./pages/Landing";
 import { EmbeddedGPN } from "./pages/EmbeddedGPN";
 
-const router = createHashRouter(
-  [
-    {
-      path: "/",
-      element: <Landing />,
-    },
-    {
-      path: "/api",
-      element: <API />,
-    },
-    {
-      path: "/embedded/gpn",
-      element: <EmbeddedGPN />,
-    },
-  ],
+const router = createHashRouter([
   {
-    basename: "/developer.lunchpayments.com/",
-  }
-);
+    path: "/",
+    element: <Landing />,
+  },
+  {
+    path: "/api",
+    element: <API />,
+  },
+  {
+    path: "/embedded/gpn",
+    element: <EmbeddedGPN />,
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
