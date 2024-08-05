@@ -1,7 +1,7 @@
 import { useHref, Link } from "react-router-dom";
 
 export const API = () => {
-  const source = useHref("/swagger/index.html");
+  const source = useHref("/swagger/index.html").replace("#", "");
 
   return (
     <div className="h-screen w-screen">
