@@ -16,7 +16,7 @@ paths:
       description: |
         Lunch uses OAuth2 for authentication. The Client ID and Client Secret are configured on the Developer tab in the Lunch App for the CP’s account.
         
-        ![authentication flow for a make payment example](/authentication_sequence_diagram.png) 
+        ![authentication flow for a make payment example](/swagger/authentication_sequence_diagram.png) 
         
         [sequence diagram](https://sequencediagram.org/index.html#initialData=A4QwTgLglgxloDsIAIBEBhAFiBCCmANsgArgT5gA6CxBIEAZgPZgC2qyIAzsusQOoAoUJFjwcKDNlyESZCtQCSSPAHMw9KEwTIAskwAmAVwJ4O3XsQBCwsmMSSAMkYQxM1WvWZtzPZ68xbUTgHNH83agB5AEEjCEwAJl9kaP4AZUEgkAJTIkEEJgg8ZCYANzwwSysALmQAJTwuJiMwGGLIgHcKfMLisorkcMxahqaWtuQ0ivKwHqKSmZT02tj4ligAL01tSemKrJzZJgYGTL5+AFoAPj4avRAAa2LSAE9WPCRBEBhoUvpi26CW7XIa1AD0IDimA+0Bg-2oyAARoYXrUAN4I5AwAhQGGKAy1ADkhIANMhMdjcUgpjAwHgIETSZijFwKggQO9GSTMaAuFwOiwCchiQiAL5fH5QP7zIaCIbXVJpWqQ+Iw2D-AAUBnoIAAlBLfv8lhlFSCXG5agkAAxW5CRADSCORBlRyAxOmQUAMABUmE8EFzMXSGHSuJhff7AwhxQY8N9DfNFXLzZhrrdLTa7Y6dM7Xe7kJ6fX6PlGC8HQ+HiwHhUzo4JY-GpUbZUDrGaAuDWI88BdQG8YQjoSBY2AuOjOFD1ltoNpaqgACRor0Rj6ijii7k5lHjvsEJjD5AAOmPyHFggAvOfvdDkH33khkAw9x1PTwDFAuDAWayDJ6dKrkC7J5bxAfsH1ZOBtEvVsrAuNMBAzW0HXrONJWlAFrCAA)    
       tags:
@@ -45,7 +45,7 @@ paths:
       description: | 
         Use case: The ACH details is called to determine the Bank account number and routing number for the payor's payment to be credited to. The ACH details call can be used to build a NACHA file or for the Lunch's /make-payment call.
 
-        ![Get ACH Details example](/getachdetails_sequence_diagram.png) 
+        ![Get ACH Details example](/swagger/getachdetails_sequence_diagram.png) 
         
         [sequence diagram](https://sequencediagram.org/index.html#initialData=IYYwLg9gTgBARABWAT2nGwDOMECgAOwUYAliCYQHZjwDCAFsJZQKYA2ORYrUAOpQjbAwAM2gBbdFhi08hYmQpMacADIBXSiHr9BwsVEkZsGrfVy4EAWgB8sgFydkMAJKUAbhDItcoUu+EWHF9wEgCwINlcWVtTbUcAegBzFjArUHorABNU4BI2TH4AIwgs5EcAb34YGBIPLxAWAFEADwioSmA2FyzHAHI+gBp+AF8Q-0CYOPNp2wcYACYABiWYAHkAaWLS8pgqyhrQEAhNMAA5dXEilih+oeqYKBPSSiSLq5u70dwcvzDJ6YWGI2aaJcTAADWLCshGQ4hY1G2ZUqDzqnm8rXanW6vRgA2GBxgsOgAEEQMdTj07gSasSoAAlZ51N6XakPWEsFhkinUKl4+6EjksRnqF4s8RfShjP7hIKA2Z2BCOZarTZI3b7WkoeHUTE3bF8gbfX6hWVTTTaCzRaw2JUwADK6nJLEwmB+LBlkyiJomERwQA)    
 
@@ -256,7 +256,7 @@ webhooks:
       description: | 
         Use case: Lunch's ERP customer's use Lunch's Vendor Portal for vendors to key in or import their invoice submissions for a purchase order.
         
-        ![Submitted Invoice webhook flow example](/webhook_submittedinvoice_sequence_diagram.png) 
+        ![Submitted Invoice webhook flow example](/swagger/webhook_submittedinvoice_sequence_diagram.png) 
         
         [sequence diagram](https://sequencediagram.org/index.html#initialData=A4QwTgLglgxloDsIAIBEBhAFiBCCmANsgArgT5gA6CxBIEAZgPZgC2qyIAzsusQFChIseDhSoAMgFcEMTNVr1mbDt2TTZmQWRGJxGudQBqeBABMWJFhBAFVPIwJAwIl1CfMt7yI-358AWgA+A0wALhIAeQBlABVkAHpgKTA5bjwAljM8MH5naAA3ejxeJxcoIogS0P5Q4L4IgCYABmbkSIBpfmz8iuLS7rxeyuqZOT8jYMcI6KHUzGRlKLzykZ8Vwv7HfkcpiOIUtK4SyLBs3J7VrYEdqeIZqQAjVigUAEkEAqZYPA2+qp8Al2ITG4WQ0SeL3en2+MF+w36NTqQWmyBabU6O2Ie3BUhgcK4XEGCIB20um1JfmRoQiAHFTDl+gB3PCPTBMJgAa1qoPq92QtIAovEEjBbARHs5OQlqABvajIKAwn4fZSsehQJgIN5mCIAcj1ABoFcl5ulTucdfqjQqAHT26gAX2JVwBoSAA)    
 
