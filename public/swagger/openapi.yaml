@@ -493,7 +493,6 @@ components:
         - purchaseOrderNumber
         - vendorId
         - vendorName
-        - vendorPhone
         - vendorAddress
         - vendorCity
         - vendorState
