@@ -6,6 +6,7 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 import { API } from "./pages/API";
 import { Landing } from "./pages/Landing";
 import { EmbeddedGPN } from "./pages/EmbeddedGPN";
+import { APILegacy } from "./pages/APILegacy";
 
 const router = createHashRouter([
   {
@@ -13,7 +14,11 @@ const router = createHashRouter([
     element: <Landing />,
   },
   {
-    path: "/api",
+    path: "/api/legacy",
+    element: <APILegacy />,
+  },
+  {
+    path: "/api/v1",
     element: <API />,
   },
   {

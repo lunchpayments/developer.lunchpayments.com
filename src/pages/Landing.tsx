@@ -1,23 +1,30 @@
-import { CloudIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
+import { CloudIcon } from "@heroicons/react/24/outline";
 import { createElement } from "react";
 import { useNavigate } from "react-router-dom";
 import { Primary } from "../layouts/Primary";
 
 const links = [
   {
-    title: "API Reference",
+    title: "Legacy B2B API Reference",
     description:
-      "Onboard vendors, create invoices and make payments with Lunch's powerful API integration.",
-    href: "/api",
+      "Legacy B2B API reference for vendors who are still using the legacy API.",
+    href: "/api/legacy",
     icon: CloudIcon,
   },
   {
+    title: "API Reference",
+    description:
+      "Onboard vendors, create invoices and make payments with Lunch's powerful API integration.",
+    href: "/api/v1",
+    icon: CloudIcon,
+  },
+  /*  {
     title: "Embedded Integration",
     description:
       "Embed the Lunch payment flow into your app with minimal code & integration time.",
     href: "/embedded/gpn",
     icon: CodeBracketIcon,
-  },
+  }, */
 ];
 
 export const Landing = () => {

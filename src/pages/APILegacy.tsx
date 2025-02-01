@@ -2,8 +2,8 @@ import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 import { Primary } from "../layouts/Primary";
 
-export const API = () => (
+export const APILegacy = () => (
   <Primary>
-    <SwaggerUI url="https://api.lunchpayments.com/v1/openapi" />
+    <SwaggerUI url="/swagger/openapi.yaml" />
   </Primary>
 );
