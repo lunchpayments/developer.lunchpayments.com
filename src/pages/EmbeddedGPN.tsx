@@ -3,34 +3,21 @@ import { Primary } from "../layouts/Primary";
 
 const steps = [
   {
-    title: "Get your OAuth Credentials",
-    description:
-      "Your OAuth credentials are used to authenticate requests made when fetching an embed token in the next step. These credentials will be provided to you by Lunch during your organization's onboarding process.",
-    code: `const exampleCredentials = {
-    clientId: '18de4710-9514-4bbc-987f-e594b1ebf443',
-    clientSecret: '721b5faf-778f-4ece-b2be-005e08e99e69',
-    username: 'ben@lunchpayments.com',
-    password: 'AVerySecretPassword',
-};`,
-  },
-  {
     title: "Create the Embed Token endpoint",
     description:
       "Lunch's embed flow only requires you to create a single endpoint within your API/system. This endpoint is used to generate a short lived embed token that is used to authenticate requests made to the Lunch API from your user interface.",
     code: `const app = express();
 
 app.get('/embed-token', async (req, res) => {
-  const response = await fetch('https://api.app.lunchpayments.com/v1/embed-sessions', {
+  const response = await fetch('https://api.lunchpayments.com/v1/embed-session-tokens', {
       method: 'POST',
       headers: {
+          'Authorization': '$YOUR_API_KEY',
           'Content-Type': 'application/json',
           'Accept': 'application/json',
       },
       body: JSON.stringify({
-          clientId: '18de4710-9514-4bbc-987f-e594b1ebf443',
-          clientSecret: '721b5faf-778f-4ece-b2be-005e08e99e69',
-          username: 'ben@lunchpayments.com',
-          password: 'AVerySecretPassword',
+          expiration: '24h',
       }),
   });
 
