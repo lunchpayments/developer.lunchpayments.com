@@ -1,4 +1,4 @@
-import { CloudIcon } from "@heroicons/react/24/outline";
+import { CloudIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
 import { createElement } from "react";
 import { useNavigate } from "react-router-dom";
 import { Primary } from "../layouts/Primary";
@@ -18,13 +18,13 @@ const links = [
     href: "/api/v1",
     icon: CloudIcon,
   },
-  /*  {
+  {
     title: "Embedded Integration",
     description:
       "Embed the Lunch payment flow into your app with minimal code & integration time.",
     href: "/embedded/gpn",
     icon: CodeBracketIcon,
-  }, */
+  },
 ];
 
 export const Landing = () => {
